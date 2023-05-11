@@ -4,7 +4,7 @@ import sys
 import colorama
 import argparse
 import logging
-
+from datetime import datetime
 from urllib3.exceptions import InsecureRequestWarning
 
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
@@ -20,7 +20,10 @@ banner = '''
 ░╚════╝░╚══════╝╚═╝░░╚══╝╚═╝░░╚═╝╚═╝╚══════╝╚══════╝╚═════╝░
 '''
 
-LOG_FILE = 'analysis-lite.log'
+now = datetime.now()
+date_time_str = now.strftime("%Y-%m-%d-%H-%M-%S")
+
+LOG_FILE = 'analysis-'+date_time_str+'.log'
 IP_LIST_FILE = ''
 
 logging.basicConfig(filename=LOG_FILE,level=logging.INFO)
@@ -213,7 +216,6 @@ def process():
  
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Recon Jenkins')
-    parser.add_argument('--logfile')
     parser.add_argument('--iplist',required=True)
     parser.add_argument('--max-pipeline-checks')
     parser.add_argument('--max-jobs-checks')
@@ -223,8 +225,7 @@ if __name__ == '__main__':
         print("Please provide an input file containing ip address in format IP:PORT")
     else:
         IP_LIST_FILE = args.iplist
-    if args.logfile:
-        LOG_FILE = args.logfile
+
 
     print(banner)
     print("[+] Reading IP:PORT from "+IP_LIST_FILE)
